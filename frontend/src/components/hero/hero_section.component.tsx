@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 
-
 const HeroSectionComponent = () => {
   const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number }>>([]);
   const nextStarId = useRef(1);
