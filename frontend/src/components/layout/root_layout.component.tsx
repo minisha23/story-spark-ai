@@ -15,7 +15,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       {!hideHeader && <NavListComponent />}
-      <div className="flex-grow">{children}</div>
+      <div className="flex flex-grow flex-col min-h-0">{children}</div>
       {!hideFooter && <FooterComponent />}
     </div>
   );

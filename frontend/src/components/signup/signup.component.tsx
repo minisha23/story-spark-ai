@@ -1,4 +1,3 @@
-import AuthLayout from "../auth/AuthLayout";
 import { useForm, SubmitHandler } from "react-hook-form";
 import SSInput from "../ui-component/ss-input/ss-input";
 import SSButton from "../ui-component/ss-button/ss-button";
@@ -63,36 +62,36 @@ const SignUpComponent = () => {
   const confirmPassword = watch("confirmPassword");
   const otp = watch("otp");
   const passwordChecks = {
-  length: password?.length >= 8,
-  uppercase: /[A-Z]/.test(password || ""),
-  lowercase: /[a-z]/.test(password || ""),
-  number: /[0-9]/.test(password || ""),
-  special: /[^A-Za-z0-9]/.test(password || ""),
-};
+    length: password?.length >= 8,
+    uppercase: /[A-Z]/.test(password || ""),
+    lowercase: /[a-z]/.test(password || ""),
+    number: /[0-9]/.test(password || ""),
+    special: /[^A-Za-z0-9]/.test(password || ""),
+  };
 
-const passedChecks =
-  Object.values(passwordChecks).filter(Boolean).length;
+  const passedChecks =
+    Object.values(passwordChecks).filter(Boolean).length;
 
-const passwordStrength =
-  passedChecks <= 2
-    ? "Weak"
-    : passedChecks <= 4
-    ? "Medium"
-    : "Strong";
+  const passwordStrength =
+    passedChecks <= 2
+      ? "Weak"
+      : passedChecks <= 4
+        ? "Medium"
+        : "Strong";
 
-const strengthColor =
-  passwordStrength === "Weak"
-    ? "bg-red-500"
-    : passwordStrength === "Medium"
-    ? "bg-yellow-400"
-    : "bg-green-500";
+  const strengthColor =
+    passwordStrength === "Weak"
+      ? "bg-red-500"
+      : passwordStrength === "Medium"
+        ? "bg-yellow-400"
+        : "bg-green-500";
 
-const strengthWidth =
-  passwordStrength === "Weak"
-    ? "w-1/3"
-    : passwordStrength === "Medium"
-    ? "w-2/3"
-    : "w-full";
+  const strengthWidth =
+    passwordStrength === "Weak"
+      ? "w-1/3"
+      : passwordStrength === "Medium"
+        ? "w-2/3"
+        : "w-full";
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (data) {
@@ -184,25 +183,44 @@ const strengthWidth =
   };
 
   return (
-    <>
-      <AuthLayout
-        title="Create Account"
-        subtitle="Join StorySparkAI and begin your creative journey."
-      >
-        <div className="w-full space-y-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-700"></div>
+    <div className="flex-1 bg-slate-900 text-slate-100 flex items-center justify-center relative overflow-hidden px-4 py-8">
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="flex w-full max-w-md flex-col justify-center py-12 relative z-10">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8">
+          <h2 className="text-center text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 drop-shadow-sm">
+            STORY SPARK AI
+          </h2>
+        </div>
+
+        <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 sm:p-10 shadow-2xl">
+          <h3 className="text-center text-2xl font-bold tracking-tight text-slate-200">
+            {showOtpField ? "Verify Your Email" : "Create Account"}
+          </h3>
+
+          {!showOtpField && (
+            <p className="mt-2 mb-6 text-center text-sm text-slate-400">
+              Join StorySparkAI and begin your creative journey.
+            </p>
+          )}
+
+          {!showOtpField && (
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-700/50"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-slate-800/60 text-slate-400 font-semibold">
+                  SIGN UP WITH EMAIL
+                </span>
+              </div>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 text-gray-400 font-semibold">
-                SIGN UP WITH EMAIL
-              </span>
-            </div>
-          </div>
+          )}
 
           {!showOtpField ? (
-            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
               <SSInput
                 label="Name"
                 name="name"
@@ -248,66 +266,77 @@ const strengthWidth =
               />
 
               <div className="space-y-3 -mt-2">
-  <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-    <div
-      className={`h-full transition-all duration-300 ${strengthColor} ${strengthWidth}`}
-    ></div>
-  </div>
+                <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${strengthColor} ${strengthWidth}`}
+                  ></div>
+                </div>
 
-  <p
-    className={`text-sm font-medium ${
-      passwordStrength === "Weak"
-        ? "text-red-400"
-        : passwordStrength === "Medium"
-        ? "text-yellow-300"
-        : "text-green-400"
-    }`}
-  >
-    {passwordStrength} Password
-  </p>
+                <p
+                  className={`text-sm font-medium ${
+                    passwordStrength === "Weak"
+                      ? "text-red-400"
+                      : passwordStrength === "Medium"
+                        ? "text-yellow-300"
+                        : "text-green-400"
+                  }`}
+                >
+                  {passwordStrength} Password
+                </p>
 
-  <ul className="space-y-1 text-xs">
-    <li
-      className={
-        passwordChecks.length ? "text-green-400" : "text-red-400"
-      }
-    >
-      {passwordChecks.length ? "✅" : "❌"} Minimum 8 characters
-    </li>
+                <ul className="space-y-1 text-xs">
+                  <li
+                    className={
+                      passwordChecks.length
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {passwordChecks.length ? "✅" : "❌"} Minimum 8 characters
+                  </li>
 
-    <li
-      className={
-        passwordChecks.uppercase ? "text-green-400" : "text-red-400"
-      }
-    >
-      {passwordChecks.uppercase ? "✅" : "❌"} One uppercase letter
-    </li>
+                  <li
+                    className={
+                      passwordChecks.uppercase
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {passwordChecks.uppercase ? "✅" : "❌"} One uppercase
+                    letter
+                  </li>
 
-    <li
-      className={
-        passwordChecks.lowercase ? "text-green-400" : "text-red-400"
-      }
-    >
-      {passwordChecks.lowercase ? "✅" : "❌"} One lowercase letter
-    </li>
+                  <li
+                    className={
+                      passwordChecks.lowercase
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {passwordChecks.lowercase ? "✅" : "❌"} One lowercase
+                    letter
+                  </li>
 
-    <li
-      className={
-        passwordChecks.number ? "text-green-400" : "text-red-400"
-      }
-    >
-      {passwordChecks.number ? "✅" : "❌"} One number
-    </li>
+                  <li
+                    className={
+                      passwordChecks.number ? "text-green-400" : "text-red-400"
+                    }
+                  >
+                    {passwordChecks.number ? "✅" : "❌"} One number
+                  </li>
 
-    <li
-      className={
-        passwordChecks.special ? "text-green-400" : "text-red-400"
-      }
-    >
-      {passwordChecks.special ? "✅" : "❌"} One special character
-    </li>
-  </ul>
-</div>
+                  <li
+                    className={
+                      passwordChecks.special
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }
+                  >
+                    {passwordChecks.special ? "✅" : "❌"} One special
+                    character
+                  </li>
+                </ul>
+              </div>
 
               <SSInput
                 label="Confirm Password"
@@ -323,7 +352,7 @@ const strengthWidth =
               <SSButton text="Sign Up" type="submit" isLoading={isBusy} />
             </form>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <SSInput
                 label="OTP"
                 name="otp"
@@ -343,17 +372,21 @@ const strengthWidth =
           )}
 
           {!showOtpField && (
-            <div className="text-center text-sm text-indigo-600">
-              <a href="/login" className="block text-custom hover:underline">
-                Already have an account? Sign In
+            <p className="mt-8 text-center text-sm text-slate-400">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200"
+              >
+                Sign In
               </a>
-            </div>
+            </p>
           )}
         </div>
-      </AuthLayout>
+      </div>
 
       <Toaster position="top-right" reverseOrder={false} />
-    </>
+    </div>
   );
 };
 
