@@ -43,7 +43,7 @@ async function main() {
           token,
           config.jwt.secret as Secret
         );
-        const userId = verifiedUser.userId || verifiedUser.sub || verifiedUser.id;
+        const userId = verifiedUser._id || verifiedUser.userId || verifiedUser.sub || verifiedUser.id;
         if (!userId) {
           return next(new Error("Unauthorized"));
         }
