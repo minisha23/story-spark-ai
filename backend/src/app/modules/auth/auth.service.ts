@@ -52,7 +52,7 @@ const login = async (payload: AuthModel) => {
   };
 };
 
-const register = async (payload: IUser & { verificationToken?: string }) => {
+const register = async (payload: IUser & { verificationToken?: string; confirmPassword?: string }) => {
   const { email: userEmail, verificationToken } = payload;
   
   // FIX #4: Verify that email was verified via OTP before allowing registration
