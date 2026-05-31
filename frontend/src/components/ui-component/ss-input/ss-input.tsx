@@ -68,6 +68,8 @@ const inputType =
   <button
     type="button"
     onClick={() => setShowPassword(!showPassword)}
+    aria-label={showPassword ? "Hide password" : "Show password"}
+    title={showPassword ? "Hide password" : "Show password"}
     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
     aria-label={showPassword ? "Hide password" : "Show password"}
     title={showPassword ? "Hide password" : "Show password"}
