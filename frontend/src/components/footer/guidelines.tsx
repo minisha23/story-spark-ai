@@ -1,16 +1,17 @@
+
 import { Link } from "react-router-dom";
-import type { LucideIcon } from "lucide-react";
 import {
-    Sparkles,
-    Lightbulb,
-    ArrowLeft,
-    MessageCircle,
-    GitPullRequestArrow,
-    Code2,
-    Accessibility,
-    Bug,
-    HeartHandshake,
+  Sparkles,
+  Lightbulb,
+  ArrowLeft,
+  MessageCircle,
+  GitPullRequestArrow,
+  Code2,
+  Accessibility,
+  Bug,
+  HeartHandshake,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 type GuidelineSection = {
   title: string;
@@ -22,7 +23,8 @@ type GuidelineSection = {
 const guidelineSections: GuidelineSection[] = [
   {
     title: "Community Values",
-    description: "StorySparkAI is an open-source creative space for writers, builders, and AI enthusiasts to learn, inspire, and create together.",
+    description:
+      "StorySparkAI is an open-source creative space for writers, builders, and AI enthusiasts to learn, inspire, and create together.",
     icon: Sparkles,
     points: [
       "Welcome contributions of every size and experience level.",
@@ -32,7 +34,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Respectful Communication",
-    description: "Keep every discussion constructive, patient, and professional across issues, pull requests, reviews, and community spaces.",
+    description:
+      "Keep every discussion constructive, patient, and professional across issues, pull requests, reviews, and community spaces.",
     icon: MessageCircle,
     points: [
       "Use empathetic language and respect different viewpoints.",
@@ -42,7 +45,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Contribution Workflow",
-    description: "Follow the documented fork, branch, commit, and pull request process so maintainers can review changes smoothly.",
+    description:
+      "Follow the documented fork, branch, commit, and pull request process so maintainers can review changes smoothly.",
     icon: GitPullRequestArrow,
     points: [
       "Fork the repository, clone your fork, and add the upstream remote.",
@@ -52,7 +56,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Pull Request & Issue Guidelines",
-    description: "Issues and PRs should be easy for maintainers to understand, reproduce, and review.",
+    description:
+      "Issues and PRs should be easy for maintainers to understand, reproduce, and review.",
     icon: Lightbulb,
     points: [
       "Open or claim an issue before starting larger feature work.",
@@ -62,7 +67,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Code Quality Expectations",
-    description: "The app should remain maintainable, readable, and consistent with the existing React, TypeScript, and Tailwind patterns.",
+    description:
+      "The app should remain maintainable, readable, and consistent with the existing React, TypeScript, and Tailwind patterns.",
     icon: Code2,
     points: [
       "Self-review your code before requesting review.",
@@ -72,7 +78,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Accessibility & Inclusivity",
-    description: "The community and product should be usable and welcoming for people with different abilities, backgrounds, and experience levels.",
+    description:
+      "The community and product should be usable and welcoming for people with different abilities, backgrounds, and experience levels.",
     icon: Accessibility,
     points: [
       "Use readable text hierarchy, contrast, and keyboard-friendly interactions.",
@@ -82,7 +89,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Reporting Bugs & Feature Requests",
-    description: "Good reports help contributors move faster and reduce back-and-forth during triage.",
+    description:
+      "Good reports help contributors move faster and reduce back-and-forth during triage.",
     icon: Bug,
     points: [
       "Describe the problem, expected behavior, and actual behavior.",
@@ -92,7 +100,8 @@ const guidelineSections: GuidelineSection[] = [
   },
   {
     title: "Collaboration & Review Etiquette",
-    description: "Reviews work best when contributors and maintainers treat them as shared problem-solving.",
+    description:
+      "Reviews work best when contributors and maintainers treat them as shared problem-solving.",
     icon: HeartHandshake,
     points: [
       "Respond to feedback gracefully and ask clarifying questions when needed.",
@@ -110,45 +119,14 @@ const workflowSteps = [
   "Open a pull request with context, screenshots, and testing notes.",
 ];
 
+
 const Guidelines = () => {
   return (
-    <div className="bg-[#0a0f1e] min-h-screen text-white px-6 py-16">
-      <div className="max-w-4xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-10 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Back to Home
-        </Link>
-        <h1 className="text-4xl font-bold mb-4">Community Guidelines</h1>
-        <p className="text-gray-400 text-lg mb-12">
-          Rules, workflows, and expectations for contributing to StorySparkAI.
-        </p>
-        <div className="space-y-10">
-          {guidelineSections.map((section) => (
-            <div key={section.title} className="bg-white/5 border border-white/10 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <section.icon className="w-5 h-5 text-indigo-400" />
-                <h2 className="text-xl font-semibold">{section.title}</h2>
-              </div>
-              <p className="text-gray-400 mb-4">{section.description}</p>
-              <ul className="space-y-2 text-gray-300 list-disc list-inside">
-                {section.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mt-16 bg-white/5 border border-white/10 rounded-xl p-6">
-          <h2 className="text-xl font-semibold mb-4">Contribution Workflow</h2>
-          <ol className="space-y-3 text-gray-300 list-decimal list-inside">
-            {workflowSteps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        </div>
-      </div>
+    <div>
+      <h1>Guidelines</h1>
     </div>
   );
 };
 
 export default Guidelines;
+
