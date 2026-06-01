@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getSocketIo, connectSocket } from "../../socket/socket.oi";
-import { isLoggedIn, getUserInfo } from "../../services/auth.service";
+import { connectSocket, getSocketIo } from "../../socket/socket.oi";
+import { AUTH_KEY } from "../../constants/storage-key";
+import { getFromLocalStorage } from "../../utils/local-storage";
+import { decodedToken } from "../../utils/jwt";
 
 interface Participant {
   userId: string;
@@ -58,6 +60,38 @@ interface SocketManagerWithCollabNamespace {
   of(namespace: "/collab"): CollabNamespaceSocket;
 }
 
+type AuthUserInfo = {
+  userId: string;
+  name: string;
+};
+
+const getCurrentUserInfo = (): AuthUserInfo | null => {
+  const token = getFromLocalStorage(AUTH_KEY);
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const payload = decodedToken(token) as {
+      userId?: string;
+      _id?: string;
+      id?: string;
+      name?: string;
+    } | null;
+
+    if (!payload) {
+      return null;
+    }
+
+    return {
+      userId: String(payload.userId || payload._id || payload.id || ""),
+      name: payload.name || "Unknown User",
+    };
+  } catch {
+    return null;
+  }
+};
+
 export default function CollabRoom() {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
@@ -65,10 +99,10 @@ export default function CollabRoom() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newText, setNewText] = useState("");
-  const user = getUserInfo();
+  const user = getCurrentUserInfo();
 
   useEffect(() => {
-    if (!isLoggedIn()) {
+    if (!getCurrentUserInfo()) {
       navigate("/login");
       return;
     }
@@ -81,9 +115,7 @@ export default function CollabRoom() {
         return;
       }
 
-      // Connect to collab namespace
-      const collabManager = socket.io as unknown as SocketManagerWithCollabNamespace;
-      const collabSocket = collabManager.of("/collab");
+      const collabSocket = (socket.io as unknown as SocketManagerWithCollabNamespace).of("/collab");
 
       const handleRoomInfo = (data: CollabRoomInfoPayload) => {
         if (data && data.room) {
@@ -100,15 +132,6 @@ export default function CollabRoom() {
         setLoading(false);
       };
 
-      collabSocket.on("collab:room_info", handleRoomInfo);
-      collabSocket.on("collab:error", handleRoomError);
-
-      collabSocket.emit("collab:join_room", { roomId });
-
-      // Request room info
-      collabSocket.emit("collab:get_room", { roomId });
-
-      // Listen for room updates
       const handleRoomUpdated = (data: CollabRoomInfoPayload) => {
         if (data && data.room) {
           setRoom(data.room);
@@ -121,14 +144,19 @@ export default function CollabRoom() {
         }
       };
 
+      collabSocket.on("collab:room_info", handleRoomInfo);
+      collabSocket.on("collab:error", handleRoomError);
       collabSocket.on("collab:room_updated", handleRoomUpdated);
       collabSocket.on("collab:story_updated", handleStoryUpdated);
 
+      collabSocket.emit("collab:join_room", { roomId });
+      collabSocket.emit("collab:get_room", { roomId });
+
       return () => {
-        collabSocket.off("collab:room_updated", handleRoomUpdated);
-        collabSocket.off("collab:story_updated", handleStoryUpdated);
         collabSocket.off("collab:room_info", handleRoomInfo);
         collabSocket.off("collab:error", handleRoomError);
+        collabSocket.off("collab:room_updated", handleRoomUpdated);
+        collabSocket.off("collab:story_updated", handleStoryUpdated);
       };
     } catch (err) {
       console.error("Collab error:", err);
@@ -199,7 +227,6 @@ export default function CollabRoom() {
         </button>
 
         <div className="grid grid-cols-3 gap-6">
-          {/* Story Content */}
           <div className="col-span-2">
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-white/10 p-6 mb-6">
               <h1 className="text-2xl font-bold mb-4">Room: {roomId}</h1>
@@ -225,7 +252,7 @@ export default function CollabRoom() {
                   type="text"
                   value={newText}
                   onChange={(e) => setNewText(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleAddText()}
+                  onKeyDown={(e) => e.key === "Enter" && handleAddText()}
                   placeholder="Add your story text..."
                   className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-white/10 rounded-lg focus:outline-none focus:border-indigo-500"
                 />
@@ -245,7 +272,6 @@ export default function CollabRoom() {
             </div>
           </div>
 
-          {/* Participants Sidebar */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
             <h2 className="text-lg font-bold mb-4">Participants ({room?.participants.length})</h2>
             <div className="space-y-2">
@@ -254,10 +280,7 @@ export default function CollabRoom() {
                   key={p.userId}
                   className="px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center gap-2"
                 >
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: p.color }}
-                  ></div>
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: p.color }}></div>
                   <span className="text-sm">{p.username}</span>
                 </div>
               ))}

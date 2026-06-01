@@ -1,35 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { connectSocket } from "../../socket/socket.oi";
-import { getUserInfo, isLoggedIn } from "../../services/auth.service";
+import { AUTH_KEY } from "../../constants/storage-key";
+import { getFromLocalStorage } from "../../utils/local-storage";
+import { decodedToken } from "../../utils/jwt";
 
-interface CollabRoomCreatedPayload {
+type AuthUserInfo = {
+  userId: string;
+  name: string;
+};
+
+type CreateRoomResponse = {
   roomId?: string;
-}
+};
 
-interface CollabRoomErrorPayload {
+type ErrorResponse = {
   message?: string;
-}
+};
 
-interface CollabNamespaceSocket {
-  once(event: "collab:room_created", listener: (response: CollabRoomCreatedPayload) => void): void;
-  once(event: "collab:error", listener: (data: CollabRoomErrorPayload) => void): void;
-  emit(event: "collab:create_room", payload: { userId?: string; username?: string }): void;
-}
+const getCurrentUserInfo = (): AuthUserInfo | null => {
+  const token = getFromLocalStorage(AUTH_KEY);
+  if (!token) {
+    return null;
+  }
 
-interface SocketManagerWithCollabNamespace {
-  of(namespace: "/collab"): CollabNamespaceSocket;
-}
+  try {
+    const payload = decodedToken(token) as {
+      userId?: string;
+      _id?: string;
+      id?: string;
+      name?: string;
+    } | null;
+
+    if (!payload) {
+      return null;
+    }
+
+    return {
+      userId: String(payload.userId || payload._id || payload.id || ""),
+      name: payload.name || "Unknown User",
+    };
+  } catch {
+    return null;
+  }
+};
 
 export default function CollabHome() {
   const navigate = useNavigate();
   const [joinRoomId, setJoinRoomId] = useState("");
   const [error, setError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-  const user = getUserInfo();
 
   const createRoom = () => {
-    if (!isLoggedIn()) {
+    const user = getCurrentUserInfo();
+
+    if (!user) {
       navigate("/login");
       return;
     }
@@ -38,16 +63,13 @@ export default function CollabHome() {
       setIsCreating(true);
       const socket = connectSocket();
       if (!socket) {
-        setError(
-          "Socket.IO connection failed. Please check VITE_SOCKET_URL in frontend/.env"
-        );
+        setError("Socket.IO connection failed. Please check VITE_SOCKET_URL in frontend/.env");
+        setIsCreating(false);
         return;
       }
 
-      const collabSocket = (socket.io as unknown as SocketManagerWithCollabNamespace).of("/collab");
-
-      const handleRoomCreated = (response: CollabRoomCreatedPayload) => {
-        if (response && response.roomId) {
+      const handleRoomCreated = (response: CreateRoomResponse) => {
+        if (response?.roomId) {
           navigate(`/collab/${response.roomId}`);
         } else {
           setError("Failed to create room. Please try again.");
@@ -55,17 +77,16 @@ export default function CollabHome() {
         setIsCreating(false);
       };
 
-      const handleRoomCreateError = (data: CollabRoomErrorPayload) => {
+      const handleRoomCreateError = (data: ErrorResponse) => {
         setError(data?.message || "Failed to create room. Please try again.");
         setIsCreating(false);
       };
 
-      collabSocket.once("collab:room_created", handleRoomCreated);
-      collabSocket.once("collab:error", handleRoomCreateError);
-
-      collabSocket.emit("collab:create_room", {
-        userId: user?.userId,
-        username: user?.name,
+      socket.once("collab:room_created", handleRoomCreated);
+      socket.once("collab:error", handleRoomCreateError);
+      socket.emit("collab:create_room", {
+        userId: user.userId,
+        username: user.name,
       });
     } catch (err) {
       console.error("Create room error:", err);
@@ -85,7 +106,6 @@ export default function CollabHome() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0d0d14] dark:text-white flex items-center justify-center px-4 transition-colors duration-300">
       <div className="max-w-lg w-full">
-        {/* Header */}
         <div className="mb-4">
           <button
             onClick={() => navigate("/")}
@@ -95,6 +115,7 @@ export default function CollabHome() {
             <span className="text-sm font-semibold tracking-wide">Back to Home</span>
           </button>
         </div>
+
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">✍️</div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent mb-3">
@@ -113,7 +134,6 @@ export default function CollabHome() {
         )}
 
         <div className="space-y-4">
-          {/* Create Room */}
           <button
             onClick={createRoom}
             disabled={isCreating}
@@ -128,7 +148,6 @@ export default function CollabHome() {
             <div className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
           </div>
 
-          {/* Join Room */}
           <div className="flex gap-3">
             <input
               value={joinRoomId}
@@ -146,7 +165,6 @@ export default function CollabHome() {
           </div>
         </div>
 
-        {/* Features */}
         <div className="mt-12 grid grid-cols-3 gap-4 text-center">
           {[
             { icon: "🎨", label: "Color-coded writers" },
