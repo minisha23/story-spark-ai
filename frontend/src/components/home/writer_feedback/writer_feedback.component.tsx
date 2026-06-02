@@ -1,8 +1,9 @@
 import React from "react";
+import { Quote } from "lucide-react";
 import { useGetReviewsQuery } from "../../../redux/apis/review.api";
-import { Review } from "../../../models/review";
+import type { Review } from "../../../models/review";
+import defaultAvatar from "../../../assets/logoNew.png";
 import ImageFallback from "../../ImageFallback";
-ImageFallback
 import ReviewForm from "./ReviewForm";
 
 const WriterFeedbackComponent = () => {
@@ -19,78 +20,150 @@ const WriterFeedbackComponent = () => {
     );
   }
 
-  return (
-    <section className="w-full box-border py-12 sm:py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 relative overflow-hidden">
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/5 rounded-full blur-[120px] pointer-events-none select-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600/5 rounded-full blur-[120px] pointer-events-none select-none" />
+  const featuredReview = feedbackData.length > 0 ? feedbackData[0] : null;
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full box-border relative z-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-16 px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/10 dark:border-white/10 bg-blue-500/5 text-blue-600 dark:text-blue-400 mb-4 select-none shadow-sm dark:shadow-none">
-            <i className="fa-solid fa-comment-dots text-xs"></i>
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Testimonials</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+  return (
+    <section className="relative overflow-hidden py-20">
+      {/* Background Glow Effects */}
+      <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl" />
+      <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <span className="inline-flex items-center rounded-full border border-yellow-400/30 bg-yellow-400/10 px-4 py-2 text-sm font-medium text-yellow-500">
+            ⭐ 4.9/5 Average Rating
+          </span>
+
+          <h2 className="mt-6 text-4xl font-bold text-slate-900 dark:text-white">
             What Our Writers Say
           </h2>
-          <p className="mt-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium max-w-md mx-auto leading-relaxed">
-            Real evaluations shared by active creators collaborating inside the automated fiction workspace pipelines.
+
+          <p className="mx-auto mt-4 max-w-2xl text-slate-600 dark:text-gray-400">
+            Hear from our growing community of writers and creators who use our
+            platform every day.
           </p>
         </div>
 
-        {feedbackData.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 w-full box-border items-stretch mb-16">
-            {feedbackData.map((writer: Review) => (
-              <div 
-                key={writer._id ?? writer.name} 
-                className="w-full text-left bg-white dark:bg-[#111827]/40 border border-slate-200 dark:border-white/10 p-5 sm:p-6 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-xl transition-all duration-200 hover:scale-[1.005] hover:border-blue-500/20 dark:hover:border-blue-500/30 flex flex-col justify-between box-border group"
-              >
-                <div className="w-full box-border">
-                  <div className="mb-4 flex items-center w-full box-border">
-                    <img 
-                      className="h-11 w-11 rounded-full object-cover border border-slate-200/80 dark:border-white/10 shrink-0 select-none" 
-                      src={writer.imgSrc || "https://i.pravatar.cc/150?img=33"} 
-                      alt={writer.name} 
-                    />
-                    <div className="ml-3.5 min-w-0 flex-1">
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-200 tracking-tight truncate">
-                        {writer.name}
-                      </h4>
-                      <p className="text-xs text-slate-400 dark:text-slate-500 font-medium truncate mt-0.5">
-                        {writer.role}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-0.5 mb-3 select-none text-amber-400 text-sm">
-                    {Array.from({ length: Math.min(writer.rating || 5, 5) }).map((_, i) => (
-                      <span key={i}>★</span>
-                    ))}
-                  </div>
+        {/* Social Proof Stats */}
+        <div className="mb-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="rounded-2xl border border-white/10 bg-white/50 p-6 text-center backdrop-blur dark:bg-slate-900/50">
+            <h3 className="text-3xl font-bold text-blue-500">10K+</h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+              Total Writers
+            </p>
+          </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
-                    "{writer.feedback}"
+          <div className="rounded-2xl border border-white/10 bg-white/50 p-6 text-center backdrop-blur dark:bg-slate-900/50">
+            <h3 className="text-3xl font-bold text-cyan-500">250K+</h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+              Stories Generated
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/50 p-6 text-center backdrop-blur dark:bg-slate-900/50">
+            <h3 className="text-3xl font-bold text-purple-500">
+              {feedbackData.length}+
+            </h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+              Reviews Submitted
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/50 p-6 text-center backdrop-blur dark:bg-slate-900/50">
+            <h3 className="text-3xl font-bold text-yellow-500">4.9★</h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+              Average Rating
+            </p>
+          </div>
+        </div>
+
+        {/* Featured Testimonial */}
+        {featuredReview && (
+          <div className="relative mb-16 overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-r from-blue-500/10 via-cyan-500/5 to-purple-500/10 p-8 md:p-10">
+            <div className="absolute right-6 top-6 opacity-20">
+              <Quote size={80} />
+            </div>
+
+            <div className="relative z-10">
+              <span className="mb-4 inline-block rounded-full bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-500">
+                Featured Testimonial
+              </span>
+
+              <p className="mb-8 max-w-4xl text-lg italic leading-relaxed text-slate-700 dark:text-gray-300 md:text-xl">
+                "{featuredReview.feedback}"
+              </p>
+
+              <div className="flex items-center gap-4">
+                <ImageFallback
+                  src={
+                    featuredReview.imgSrc?.trim()
+                      ? featuredReview.imgSrc
+                      : defaultAvatar
+                  }
+                  alt={featuredReview.name}
+                  className="h-16 w-16 rounded-full object-cover ring-2 ring-blue-300/30"
+                />
+
+                <div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">
+                    {featuredReview.name}
+                  </h3>
+
+                  <p className="text-slate-600 dark:text-gray-400">
+                    {featuredReview.role}
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-2xl sm:rounded-3xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.02] p-8 text-center box-border max-w-xl mx-auto mb-16">
-            <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-900 flex items-center justify-center mx-auto mb-4 border border-slate-200/60 dark:border-white/5">
-              <i className="fa-solid fa-quote-right text-slate-400 dark:text-slate-500 text-lg"></i>
             </div>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-              No approved reviews are indexed inside the operational directory cluster node.
-            </p>
           </div>
         )}
 
-        <div className="w-full box-border relative z-20">
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {feedbackData.map((writer: Review, index: number) => {
+            const avatarSrc = writer.imgSrc?.trim()
+              ? writer.imgSrc
+              : defaultAvatar;
+
+            return (
+              <div
+                key={writer._id ?? writer.name ?? index}
+                className="group rounded-2xl border border-white/10 bg-white/60 p-7 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:bg-slate-900/60"
+              >
+                <Quote size={36} className="mb-4 text-blue-400 opacity-60" />
+
+                <p className="mb-6 leading-relaxed text-slate-600 dark:text-gray-400">
+                  "{writer.feedback}"
+                </p>
+
+                <div className="flex items-center">
+                  <ImageFallback
+                    className="h-14 w-14 rounded-full object-cover ring-2 ring-blue-300/25"
+                    src={avatarSrc}
+                    alt={writer.name}
+                  />
+
+                  <div className="ml-4">
+                    <h4 className="font-semibold text-slate-800 dark:text-white">
+                      {writer.name}
+                    </h4>
+
+                    <p className="text-sm text-slate-500 dark:text-gray-400">
+                      {writer.role}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Review Form Section */}
+        <div className="mt-10">
           <ReviewForm />
         </div>
       </div>
-      <ReviewForm />
     </section>
   );
 };

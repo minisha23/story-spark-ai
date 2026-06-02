@@ -11,6 +11,7 @@ import WriterFeedbackComponent from "./writer_feedback/writer_feedback.component
 import StartWritingComponent from "./start_writing/start_writing.component";
 import PersonalizedRecommendationsComponent from "./personalized_recommendations/personalized_recommendations.component";
 import { isLoggedIn } from "../../services/auth.service";
+import BackToTop from "../back_home/back_to_top.component";
 
 const HomeComponent = () => {
   const isLogin = isLoggedIn();
@@ -38,14 +39,12 @@ const HomeComponent = () => {
         </aside>
 
       </div>
-
-      <div className="w-full box-border space-y-4 sm:space-y-8">
-        <CommunitySpotlightComponent />
-        <ResourceComponent />
-        <WriterFeedbackComponent />
-        <PricingComponent />
-        <StartWritingComponent />
-      </div>
+      <CommunitySpotlightComponent /> 
+      <ResourceComponent />
+      <WriterFeedbackComponent />
+      <PricingComponent />
+      <StartWritingComponent />
+      <BackToTop />
     </div>
   );
 };

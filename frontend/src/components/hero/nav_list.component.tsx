@@ -117,30 +117,6 @@ const HeaderComponent: React.FC = () => {
               )}
             </NavLink>
 
-            <NavLink to="/analytics" className={({ isActive }) => getLinkClass(isActive)}>
-              {({ isActive }) => (
-                <>
-                  {isActive && (
-                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_#3b82f6]" />
-                  )}
-                  <i className="fa-solid fa-chart-column" />
-                  ANALYTICS
-                </>
-              )}
-            </NavLink>
-
-            <NavLink to="/collab" className={({ isActive }) => getLinkClass(isActive)}>
-              {({ isActive }) => (
-                <>
-                  {isActive && (
-                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_#3b82f6]" />
-                  )}
-                  <i className="fa-solid fa-pen-nib" />
-                  COLLAB
-                </>
-              )}
-            </NavLink>
-
             <NavLink to="/contact-us" className={({ isActive }) => getLinkClass(isActive)}>
               {({ isActive }) => (
                 <>
@@ -259,7 +235,7 @@ const HeaderComponent: React.FC = () => {
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen((prev) => !prev)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-600 dark:text-slate-400 transition-all duration-300 hover:bg-slate-200/60 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:bg-white cursor-pointer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-600 dark:text-slate-400 transition-all duration-300 hover:bg-slate-200/60 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white cursor-pointer"
               >
                 <i className={menuOpen ? "fa-solid fa-xmark text-lg" : "fa-solid fa-bars text-lg"} />
               </button>
@@ -290,14 +266,6 @@ const HeaderComponent: React.FC = () => {
             <span className="flex items-center gap-2"><i className="fa-solid fa-book-open" /> INSPIRING</span>
           </NavLink>
 
-          <NavLink to="/analytics" className={({ isActive }) => getMobileLinkClass(isActive)} onClick={() => setMenuOpen(false)}>
-            <span className="flex items-center gap-2"><i className="fa-solid fa-chart-column" /> ANALYTICS</span>
-          </NavLink>
-
-          <NavLink to="/collab" className={({ isActive }) => getMobileLinkClass(isActive)} onClick={() => setMenuOpen(false)}>
-            <span className="flex items-center gap-2"><i className="fa-solid fa-pen-nib" /> COLLAB</span>
-          </NavLink>
-
           <NavLink to="/contact-us" className={({ isActive }) => getMobileLinkClass(isActive)} onClick={() => setMenuOpen(false)}>
             <span className="flex items-center gap-2"><i className="fa-solid fa-envelope" /> CONTACT</span>
           </NavLink>
@@ -320,7 +288,7 @@ const HeaderComponent: React.FC = () => {
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:hover:bg-rose-500/20 transition-all text-left mt-2 cursor-pointer border-none outline-none"
+                className="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:hover:bg-rose-500/20 transition-all text-left mt-2 cursor-pointer"
               >
                 <i className="fa-solid fa-arrow-right-from-bracket" /> LOGOUT
               </button>
@@ -330,12 +298,12 @@ const HeaderComponent: React.FC = () => {
           {!isLogin && (
             <div className="grid grid-cols-2 gap-2 mt-2">
               <Link to="/login" onClick={() => setMenuOpen(false)} className="w-full">
-                <button className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer bg-transparent">
+                <button className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer">
                   LOGIN
                 </button>
               </Link>
               <Link to="/signup" onClick={() => setMenuOpen(false)} className="w-full">
-                <button className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-sm font-semibold text-white shadow-md hover:from-blue-500 hover:to-indigo-500 cursor-pointer border-none">
+                <button className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-sm font-semibold text-white shadow-md hover:from-blue-500 hover:to-indigo-500 cursor-pointer">
                   SIGN UP
                 </button>
               </Link>

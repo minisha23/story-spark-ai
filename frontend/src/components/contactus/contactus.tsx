@@ -7,15 +7,16 @@ import {
   Pencil,
   Send,
   GitBranch,
-  CheckCircle2,
+  Sparkles,
   AlertCircle,
   ArrowUpRight,
   Zap,
 } from "lucide-react";
 
-import { instance as axios } from "../../helpers/axios/axionInstance";
+import { instance as axios } from "../../helpers/axios/axiosInstance";
 import { getBaseUrl } from "../../helpers/config";
 import storybook from "../../assets/storybook.png";
+import { motion } from "framer-motion";
 
 type FormData = {
   fullname: string;
@@ -171,7 +172,7 @@ export default function Contact() {
           </span>
         </div>
 
-        <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-12 xl:gap-16 w-full box-border">
+        <motion.div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-12 xl:gap-16 w-full box-border">
 
           <div className="flex flex-col w-full box-border text-left">
             <span className="mb-6 hidden w-fit items-center gap-1.5 rounded-full border border-blue-500/10 dark:border-white/10 bg-blue-500/5 text-blue-600 dark:text-blue-400 px-4 py-1.5 text-xs font-bold uppercase tracking-wider lg:inline-flex select-none">
@@ -254,76 +255,101 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="w-full lg:sticky lg:top-24 box-border">
-            <div className="w-full bg-white dark:bg-[#111827]/40 border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm hover:shadow-xl transition-shadow duration-300 box-border text-left">
-              
-              <div className="mb-6 select-none">
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
-                  Send a Message
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
-                  We'll evaluate and get back to you within 24 hours.
-                </p>
-              </div>
+          {/* GLOW ELEMENT */}
+          <div className="relative mt-16 hidden items-center justify-center lg:flex">
+            <div className="h-[320px] w-[320px] animate-pulse rounded-full bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
 
-              <form
-                onSubmit={submitHandler}
-                noValidate
-                aria-label="Contact form"
-                className="space-y-4 w-full box-border"
-              >
-                {FORM_FIELDS.map(({ id, name, type, label, placeholder, icon: Icon, autoComplete }) => (
-                  <div key={id} className="group w-full">
-                    <label
-                      htmlFor={id}
-                      className="mb-1.5 block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400 select-none"
-                    >
-                      {label}
-                    </label>
-                    <div className="relative w-full">
-                      <Icon
-                        aria-hidden="true"
-                        className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors duration-150 group-focus-within:text-blue-500"
-                      />
-                      <input
-                        id={id}
-                        type={type}
-                        name={name}
-                        placeholder={placeholder}
-                        value={formData[name]}
-                        onChange={changeHandler}
-                        required
-                        autoComplete={autoComplete}
-                        className="w-full h-11 bg-slate-50 text-slate-800 border border-slate-200 placeholder-slate-400 dark:bg-slate-900/50 dark:border-white/10 dark:text-slate-100 dark:placeholder-slate-500 rounded-xl pl-10 pr-4 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/40 transition-all duration-150 box-border"
-                      />
-                    </div>
-                  </div>
-                ))}
+            <div className="absolute flex h-44 w-44 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl">
+              <Sparkles className="h-20 w-20 text-purple-400" />
+            </div>
+          </div>
+        </motion.div>
 
-                <div className="group w-full">
-                  <label
-                    htmlFor="contact-message"
-                    className="mb-1.5 block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400 select-none"
-                  >
-                    Message
-                  </label>
-                  <div className="relative w-full">
-                    <Pencil
-                      aria-hidden="true"
-                      className="pointer-events-none absolute left-3.5 top-3.5 h-4 w-4 text-slate-400 transition-colors duration-150 group-focus-within:text-blue-500"
-                    />
-                    <textarea
-                      id="contact-message"
-                      rows={5}
-                      name="message"
-                      placeholder="Tell us what's on your mind…"
-                      value={formData.message}
-                      onChange={changeHandler}
-                      required
-                      className="w-full resize-none bg-slate-50 text-slate-800 border border-slate-200 placeholder-slate-400 dark:bg-slate-900/50 dark:border-white/10 dark:text-slate-100 dark:placeholder-slate-500 rounded-xl pb-4 pl-10 pr-4 pt-3.5 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/40 transition-all duration-150 box-border leading-relaxed"
-                    />
-                  </div>
-                </div>
+      {/* RIGHT */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="relative"
+        >
+          <div className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-20 blur-2xl" />
+
+         <form
+  onSubmit={submitHandler}
+  className="relative space-y-6 rounded-[2rem] border border-white/10 bg-white/[0.05] p-7 backdrop-blur-2xl sm:p-10"
+>
+  {/* NAME */}
+  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0b1120]/80 px-5 py-3 transition-all duration-300 hover:border-purple-400/40 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/20">
+    <User className="h-5 w-5 flex-shrink-0 text-purple-300" />
+    <div className="flex flex-col flex-grow min-w-0">
+      <label className="text-[10px] font-bold uppercase tracking-wider text-purple-300/80 mb-1 block">
+        Full Name
+      </label>
+      <input
+        type="text"
+        name="fullname"
+        value={formData.fullname}
+        onChange={changeHandler}
+        required
+        className="w-full bg-transparent text-base text-white outline-none p-0 border-none focus:ring-0"
+      />
+    </div>
+  </div>
+
+  {/* EMAIL */}
+  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0b1120]/80 px-5 py-3 transition-all duration-300 hover:border-blue-400/40 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
+    <Mail className="h-5 w-5 flex-shrink-0 text-blue-300" />
+    <div className="flex flex-col flex-grow min-w-0">
+      <label className="text-[10px] font-bold uppercase tracking-wider text-blue-300/80 mb-1 block">
+        Email Address
+      </label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={changeHandler}
+        required
+        className="w-full bg-transparent text-base text-white outline-none p-0 border-none focus:ring-0"
+      />
+    </div>
+  </div>
+
+  {/* SUBJECT */}
+  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0b1120]/80 px-5 py-3 transition-all duration-300 hover:border-pink-400/40 focus-within:border-pink-500 focus-within:ring-2 focus-within:ring-pink-500/20">
+    <FileText className="h-5 w-5 flex-shrink-0 text-pink-300" />
+    <div className="flex flex-col flex-grow min-w-0">
+      <label className="text-[10px] font-bold uppercase tracking-wider text-pink-300/80 mb-1 block">
+        Subject
+      </label>
+      <input
+        type="text"
+        name="subject"
+        value={formData.subject}
+        onChange={changeHandler}
+        required
+        className="w-full bg-transparent text-base text-white outline-none p-0 border-none focus:ring-0"
+      />
+    </div>
+  </div>
+
+  {/* MESSAGE */}
+  <div className="flex items-start gap-4 rounded-2xl border border-white/10 bg-[#0b1120]/80 px-5 py-4 transition-all duration-300 hover:border-purple-400/40 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/20">
+    <Pencil className="mt-1 h-5 w-5 flex-shrink-0 text-purple-300" />
+    <div className="flex flex-col flex-grow min-w-0">
+      <label className="text-[10px] font-bold uppercase tracking-wider text-purple-300/80 mb-2 block">
+        Message
+      </label>
+      <textarea
+        rows={6}
+        name="message"
+        value={formData.message}
+        onChange={changeHandler}
+        required
+        className="w-full resize-none bg-transparent text-base text-white outline-none p-0 border-none focus:ring-0"
+      />
+    </div>
+  </div>
 
                 <button
                   type="submit"
@@ -345,34 +371,32 @@ export default function Contact() {
                   )}
                 </button>
 
-                {success && (
-                  <div
-                    role="status"
-                    aria-live="polite"
-                    className="flex items-start gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.02] px-4 py-3.5 mt-4"
-                  >
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500 dark:text-emerald-400" aria-hidden="true" />
-                    <p className="text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 tracking-tight">
-                      Message sent — we'll get back to you within 24 hours.
-                    </p>
-                  </div>
-                )}
+  {/* SUCCESS & ERROR MESSAGE BLOCKS */}
+  {success && (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-4"
+    >
+      <p className="text-center text-sm font-medium text-green-400 sm:text-base">
+        ✓ Message sent successfully.
+      </p>
+    </motion.div>
+  )}
 
-                {error && (
-                  <div
-                    role="alert"
-                    aria-live="assertive"
-                    className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.02] px-4 py-3.5 mt-4"
-                  >
-                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500 dark:text-red-400" aria-hidden="true" />
-                    <p className="text-xs sm:text-sm font-semibold text-red-500 dark:text-red-400 tracking-tight">{error}</p>
-                  </div>
-                )}
-              </form>
-            </div>
-          </div>
-
-        </div>
+  {error && (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-4"
+    >
+      <p className="text-center text-sm font-medium text-red-400 sm:text-base">
+        {error}
+      </p>
+    </motion.div>
+  )}
+</form>
+        </motion.div>
       </div>
     </section>
   );

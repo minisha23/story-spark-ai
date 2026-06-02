@@ -75,7 +75,7 @@ const ResourceComponent = () => (
         ))}
       </div>
     </div>
-  );
-};
+  </section>
+);
 
 export default ResourceComponent;

@@ -9,6 +9,7 @@ export default function CollabHome() {
   const [joinRoomId, setJoinRoomId] = useState("");
   const [error, setError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const user = getUserInfo();
 
   const createRoom = () => {
     if (!isLoggedIn()) {
@@ -40,9 +41,9 @@ export default function CollabHome() {
       collabSocket.emit(
         "collab:create_room",
         { userId: user?.userId, username: user?.name },
-        (response: { roomId: string } | null) => {
-          if (response && response.roomId) {
-            navigate(`/collab/${response.roomId}`);
+        (response: unknown) => {
+          if (response && (response as { roomId: string }).roomId) {
+            navigate(`/collab/${(response as { roomId: string }).roomId}`);
           } else {
             setError("Failed to create room. Please try again.");
           }

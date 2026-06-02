@@ -14,7 +14,7 @@ const HelpCategoryCard: FC<HelpCategoryCardProps> = ({ category }) => {
     <button
       type="button"
       onClick={handleClick}
-<<<<<<< HEAD
+
       className="group text-left w-full bg-white dark:bg-[#111827]/40 border border-slate-200 dark:border-white/10 hover:border-blue-500/40 dark:hover:border-blue-500/30 p-5 sm:p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 cursor-pointer flex flex-col justify-between box-border"
     >
       <div className="w-full">
@@ -30,7 +30,7 @@ const HelpCategoryCard: FC<HelpCategoryCardProps> = ({ category }) => {
       </div>
       <div className="inline-flex items-center gap-1.5 mt-5 text-xs sm:text-sm text-blue-600 dark:text-blue-400 group-hover:text-blue-500 dark:group-hover:text-blue-300 font-bold tracking-tight select-none">
         Browse Section
-=======
+
       className="group text-left w-full bg-white hover:bg-slate-50 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 border border-slate-200 dark:border-white/5 hover:border-indigo-500/30 p-6 rounded-xl shadow-md transform transition-all duration-300 hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     >
       <div className="text-3xl mb-4 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
@@ -47,7 +47,7 @@ const HelpCategoryCard: FC<HelpCategoryCardProps> = ({ category }) => {
 
       <span className="inline-flex items-center gap-1 mt-4 text-sm text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 font-medium">
         Learn more
->>>>>>> origin/main
+
         <i
           className="fa-solid fa-arrow-right text-[10px] sm:text-xs transition-transform group-hover:translate-x-1 shrink-0"
           aria-hidden="true"

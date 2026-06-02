@@ -7,8 +7,9 @@ import {
   useGetPendingReviewsQuery,
 } from "../../redux/apis/review.api";
 import { Review } from "../../models/review";
+import defaultAvatar from "../../assets/logoNew.png";
 import ImageFallback from "../ImageFallback";
-ImageFallback
+
 const ReviewApprovalComponent = () => {
   const { data: reviews = [], isLoading } = useGetPendingReviewsQuery({});
   const [approveReview, { isLoading: isApproving }] = useApproveReviewMutation();
