@@ -339,6 +339,7 @@ const toggleBookmark = async (postId: string, token: ITokenPayload) => {
     );
     return { message: "Bookmark added", bookmarked: true };
   }
+}
 };
 
 const updatePost = async (
@@ -500,9 +501,7 @@ export const PostService = {
   deletePost,
   remixStory,       // Exposed service for AI story variations
   translateStory,   // Exposed service for localized modifications
-};
   remixStory,
   translateStory,
   getGenres,
 };
-
