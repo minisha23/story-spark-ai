@@ -32,10 +32,8 @@ instance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
-
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         const baseUrl = getBaseUrl();
         const response = await axios.post(
@@ -43,9 +41,7 @@ instance.interceptors.response.use(
           {},
           { withCredentials: true },
         );
-
         const newAccessToken = response.data?.data?.accessToken;
-
         if (newAccessToken) {
           storeUserInfo({ accessToken: newAccessToken });
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -57,7 +53,6 @@ instance.interceptors.response.use(
         return Promise.reject(error);
       }
     }
-
     let errorObject: ResponseErrorType;
     if (error.code === "ERR_NETWORK") {
       errorObject = {
