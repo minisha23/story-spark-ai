@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   useDeletePostMutation,
@@ -6,10 +6,6 @@ import {
   useGetPostByTagQuery,
   useUpdatePostMutation,
 } from "../../redux/apis/post.api";
-import {
-  useGetVersionsByStoryIdQuery,
-  useRestoreVersionMutation,
-} from "../../redux/apis/storyVersion.api";
 import RelatedStoriesComponent from "./related.stories.view.component";
 import PostCommentComponent from "./post.comment.component";
 import { ComparisonMode } from "../story-comparison";
@@ -96,8 +92,24 @@ const PostDetailsComponent = () => {
   });
 
   const [toggleFollow] = useToggleFollowMutation();
+  const [readingProgress, setReadingProgress] = useState(0);
+  const articleRef = useRef<HTMLDivElement>(null);
 
   const isFollowing = followData?.isFollowing ?? false;
+
+  useEffect(() => {
+  const updateProgress = () => {
+    const article = articleRef.current;
+    if (!article) return;
+    const { top, height } = article.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const scrolled = Math.max(0, -top);
+    const total = Math.max(1, height - windowHeight);
+    setReadingProgress(Math.min(100, (scrolled / total) * 100));
+  };
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  return () => window.removeEventListener("scroll", updateProgress);
+  }, []);
 
   // New Version Timeline and Editor States
   const [isEditing, setIsEditing] = useState(false);
@@ -433,8 +445,8 @@ const PostDetailsComponent = () => {
                   />
                 </div>
 
-                <div className="prose max-w-none mb-12 text-slate-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed text-lg font-light">
-                  <p>{post?.content}</p>
+                <div ref={articleRef} className="prose max-w-none mb-12 text-slate-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed text-lg font-light">
+                      <p>{post?.content}</p>
                 </div>
 
                 {post?.content && (
