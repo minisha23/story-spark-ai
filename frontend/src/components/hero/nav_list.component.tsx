@@ -243,7 +243,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { isLoggedIn, removeUserInfo } from "../../services/auth.service";
 import ThemeToggle from "../theme/theme_toggle.component";
-import logo from "../../assets/logo.png";
 import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
 
 const NavListComponent = () => {
@@ -313,7 +312,10 @@ const NavListComponent = () => {
               handleNavClick();
             }}
           >
-            <img src={logo} alt="StorySparkAI Logo" className="h-8 w-auto" />
+            <div className="relative grid h-11 w-11 place-items-center rounded-2xl border border-white/70 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-white shadow-lg shadow-indigo-600/25 transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-indigo-600/40 dark:border-white/15">
+              <div className="absolute inset-0 rounded-2xl bg-white/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <Sparkles className="relative h-5 w-5" />
+            </div>
             <div className="hidden sm:block leading-tight">
               <span className="block text-base font-extrabold tracking-normal text-slate-950 transition-colors duration-300 group-hover:text-indigo-700 dark:text-white dark:group-hover:text-indigo-200">
                 Story Spark
@@ -361,6 +363,7 @@ const NavListComponent = () => {
               </NavLink>
             </motion.div>
           ))}
+
           {loggedIn && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
