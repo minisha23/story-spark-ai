@@ -10,7 +10,6 @@ const LatestPostsComponent = () => {
   const { data, isLoading, isError, refetch } =
     useGetLatestListsQuery(undefined);
 
-  console.log(data?.posts);
   const navigate = useNavigate();
   const [showAllPosts, setShowAllPosts] = useState(false);
   const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
