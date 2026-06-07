@@ -96,7 +96,7 @@ const FAQAccordion: FC<FAQAccordionProps> = ({ items }) => {
                       <div className="px-6 pb-6">
                         <div className="rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-white/5 p-5">
                           <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">
-                            {item.answer}
+                            {faq.answer}
                           </p>
                         </div>
                 {/* Question Button */}
