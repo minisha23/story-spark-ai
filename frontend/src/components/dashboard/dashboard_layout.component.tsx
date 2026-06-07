@@ -190,6 +190,10 @@ const DashboardLayout: React.FC = () => {
   };
 
   const user = getUserInfo();
+  const { data } = useGetProfileInfoQuery();
+  if (!user) {
+  return <Navigate to="/login" replace />;
+}
 
   // Single hook call with skip condition - must be called unconditionally
   const { data: userProfile } = useGetProfileInfoQuery(undefined, {
