@@ -1,4 +1,5 @@
 // backend/src/services/ai.service.ts
+
 import { validateAndFormatPrompt, validateOutput } from "../utils/promptSecurity";
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -92,8 +93,21 @@ export async function generateStory(prompt: string): Promise<AIResponse> {
     console.log("[AI] Story generated successfully via OpenAI");
 
     return { story, provider: "openai", fallbackUsed: false };
-  } catch (error) {
-    // ... existing catch block code stays the same ...
+
+  } catch (openAIError) {
+    console.warn(
+      "[AI] OpenAI failed:",
+      openAIError instanceof Error ? openAIError.message : openAIError
+    );
+
+    // Only fall back if the error type warrants it
+    if (!isRetryableError(openAIError)) {
+      throw new Error(
+        "OpenAI request failed with a non-retryable error. Please check your API key."
+      );
+    }
+
+    console.log("[AI] Falling back to Gemini...");
   }
 
   // ── Try Gemini as fallback ────────────────────────────────────────────────
@@ -103,10 +117,49 @@ export async function generateStory(prompt: string): Promise<AIResponse> {
     console.log("[AI] Story generated successfully via Gemini (fallback)");
 
     return { story, provider: "gemini", fallbackUsed: true };
-  } catch (error) {
-    // ... existing catch block code stays the same ...
+
+  } catch (geminiError) {
+    console.error(
+      "[AI] Gemini also failed:",
+      geminiError instanceof Error ? geminiError.message : geminiError
+    );
+
+    // Both failed — throw a clean user-facing error
+    throw new Error(
+      "Story generation failed. Both AI providers are currently unavailable. Please try again later."
+    );
   }
-} catch (geminiError) {
+}  // ── Try OpenAI first ──────────────────────────────────────────────────────
+  try {
+    const story = await generateWithOpenAI(prompt);
+    console.log("[AI] Story generated successfully via OpenAI");
+
+    return { story, provider: "openai", fallbackUsed: false };
+
+  } catch (openAIError) {
+    console.warn(
+      "[AI] OpenAI failed:",
+      openAIError instanceof Error ? openAIError.message : openAIError
+    );
+
+    // Only fall back if the error type warrants it
+    if (!isRetryableError(openAIError)) {
+      throw new Error(
+        "OpenAI request failed with a non-retryable error. Please check your API key."
+      );
+    }
+
+    console.log("[AI] Falling back to Gemini...");
+  }
+
+  // ── Try Gemini as fallback ────────────────────────────────────────────────
+  try {
+    const story = await generateWithGemini(prompt);
+    console.log("[AI] Story generated successfully via Gemini (fallback)");
+
+    return { story, provider: "gemini", fallbackUsed: true };
+
+  } catch (geminiError) {
     console.error(
       "[AI] Gemini also failed:",
       geminiError instanceof Error ? geminiError.message : geminiError
